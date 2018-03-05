@@ -5,6 +5,7 @@ var gameOver = document.querySelector("#game-over");
 var flag = document.querySelectorAll('.flag');
 var score = document.querySelector(".score strong");
 var imgLife = document.querySelectorAll(".lives img");
+var flagImg = document.querySelectorAll(".flags img")
 var life = 2;
 
 var time = function() {
@@ -69,6 +70,9 @@ var generatePositionFlag = function(goodPlace, goodColors, imgFlag) {
 var clear = function(clearFlags) {
     for (var i = 0; i < clearFlags.length; i++)
         clearFlags[i].src = "";
+    for (i = 0; i < flag.length; i++) {
+        flag[i].classList.remove('is-active');
+    }
 }
 
 var generateGame = function() {
@@ -91,14 +95,15 @@ for (let i = 0; i < start.length; i++) {
         startScreen.classList.remove("is-open");
         gameOver.classList.remove('is-open')
         timer.textContent = 20;
+        for (var j = 0; j < imgLife.length; j++) {
+            imgLife[j].style.opacity = "1";
+        }
         life = 2;
         score.textContent = 0;
         generateGame();
     });
 }
 
-
-var flagImg = document.querySelectorAll(".flags img")
 for (let i = 0; i < flagImg.length; i++) {
     flagImg[i].addEventListener("click", function() {
         if (flagImg[i].dataset.code !== "no") {
@@ -109,8 +114,9 @@ for (let i = 0; i < flagImg.length; i++) {
             else
                 timer.textContent = 30;
         } else  {
-            imgLife[life].style.color = "white";
+            imgLife[life].style.opacity = "0";
             life--;
+            flag[i].classList.add("is-active");
             if (life === -1) {
                 gameOver.classList.add('is-open');
             }
