@@ -7,6 +7,10 @@ var score = document.querySelector(".score strong");
 var imgLife = document.querySelectorAll(".lives img");
 var flagImg = document.querySelectorAll(".flags img")
 var life = 2;
+var flags = theFlags;
+var timeToAdd = 3;
+var setTime = 20;
+var maxTime = 40;
 
 var time = function() {
     if (timer.textContent > 0)
@@ -17,7 +21,6 @@ var time = function() {
 
 var startTimer = function() {
     intervalID = setInterval(time, 1000);
-    console.log(flag);
 }
 
 var rand = function(max) {
@@ -81,7 +84,7 @@ var generateGame = function() {
     clear(imgFlag);
     var indexFlag = rand(flags.length);
     var selectFlag = flags[indexFlag];
-    var randomPos = rand(4);
+    var randomPos = rand(imgFlag.length);
 
     contryName.textContent = flags[indexFlag].name;
     imgFlag[randomPos].src = "flags/" + selectFlag.code.toLowerCase() + ".svg";
@@ -100,6 +103,7 @@ for (let i = 0; i < start.length; i++) {
         }
         life = 2;
         score.textContent = 0;
+        flags = theFlags;
         generateGame();
     });
 }
@@ -107,12 +111,18 @@ for (let i = 0; i < start.length; i++) {
 for (let i = 0; i < flagImg.length; i++) {
     flagImg[i].addEventListener("click", function() {
         if (flagImg[i].dataset.code !== "no") {
+            for (var j = 0; j < flags.length; j++) {
+                if (flagImg[i].dataset.code === flags[j].code) {
+                    flags.splice(j, 1);
+                    console.log(flags[j].code, flagImg[i].dataset.code);
+                }
+            }
             generateGame();
             score.textContent = parseInt(score.textContent) + 10;
-            if (timer.textContent < 27)
-                timer.textContent = parseInt(timer.textContent) + 3;
+            if (timer.textContent < maxTime - timeToAdd)
+                timer.textContent = parseInt(timer.textContent) + timeToAdd;
             else
-                timer.textContent = 30;
+                timer.textContent = maxTime;
         } else  {
             imgLife[life].style.opacity = "0";
             life--;

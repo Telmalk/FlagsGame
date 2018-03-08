@@ -1,4 +1,4 @@
-var flags = [
+var theFlags = [
  {
   "name": "Albania ",
   "code": "AL",
